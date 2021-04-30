@@ -5,7 +5,7 @@ from datetime import datetime
 
 print(Score.chargerScores())
 
-score = Score("Shawn", 10, datetime.now)
+score = Score("Shawn2", 10, datetime.now)
+score.sauvegarder()
 
-print(Config.charger())
-Config(1, 2, 3).sauvegarder()
+print(Score.chargerScores())

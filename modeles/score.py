@@ -60,7 +60,7 @@ class Score ():
             
             
             requete = "INSERT INTO "+self.TABLE_SCORE+" (nom, score, date) VALUES (?, ?, ?)"
-            params = (self.getNom, self.getScore, datetime.now)
+            params = (self.getNom(), self.getScore(), datetime.now())
             
             curseur.execute(requete, params)
             
