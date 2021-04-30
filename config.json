@@ -1,5 +1,5 @@
 {
-    "grosseurGrille": 8,
-    "tickRate": 1,
-    "longeurDebut": 3
+  "grosseurGrille": 1,
+  "tickRate": 2,
+  "longeurDebut": 3
 }
