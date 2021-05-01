@@ -1,25 +1,34 @@
-from gpiozero import *
-from time import sleep
-from signal import pause
-from ADCDevice import *
+import tkinter as tk
 
-adc = ADS7830()
-graphique = LEDBarGraph(22,6,13,26,16,12,5,25,24,23, initial_value=0, pwm=True)
-buzzer = Buzzer(19)
+# --- constants --- (UPPER_CASE_NAMES)
 
-graphique.value = 1
-buzzer.beep(0.25, 0, 1)
+SIZE = 40
 
-def clampJoystick(val):
-    if(val > 200): val = 1
-    elif(val < 100): val = -1
-    else: val = 0
-    return -val
+# --- main --- (lower_case_names)
 
-while True:
-    valeurY = clampJoystick(adc.analogRead(1))
-    valeurX = clampJoystick(adc.analogRead(0))
-    
-    
-    print("X: " + str(valeurX) + " Y: " + str(valeurY))
-    sleep(0.25)
+root = tk.Tk()
+
+canvas = tk.Canvas(root, width=400, height=400)
+canvas.pack()
+
+color = 'white'
+
+for y in range(10):
+
+    for x in range(10):
+        x1 = x*SIZE
+        y1 = y*SIZE
+        x2 = x1 + SIZE
+        y2 = y1 + SIZE
+        canvas.create_rectangle((x1, y1, x2, y2), fill=color)
+        if color == 'white':
+            color = 'black'
+        else:    
+            color = 'white'
+
+    if color == 'white':
+        color = 'black'
+    else:    
+        color = 'white'
+
+root.mainloop()  

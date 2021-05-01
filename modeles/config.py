@@ -6,7 +6,7 @@ import os
 
 class Config:
 
-    FICHIER_CONFIG = "./config.json"
+    FICHIER_CONFIG = "./stockage/config.json"
     
     ####################################
     ##            DUNDERS             ##

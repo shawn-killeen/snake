@@ -6,7 +6,7 @@ import sqlite3
 
 class Score ():
     
-    FICHIER_DB = "./snake.db"
+    FICHIER_DB = "./stockage/snake.db"
     TABLE_SCORE = "score"  
     
     ####################################

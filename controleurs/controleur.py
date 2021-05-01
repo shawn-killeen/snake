@@ -18,6 +18,7 @@ class Controleur(Tk):
         self._logique = Logique(self)
 
         self.title("Snake - Shawn Killeen")
+        #self.resizable(width=False, height=False)
         self._demarrerVue()
         
     ####################################

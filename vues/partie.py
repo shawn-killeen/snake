@@ -3,31 +3,43 @@ from tkinter import *
 
 class Partie(Frame):
     
+    ####################################
+    ##            DUNDERS             ##
+    ####################################
+    
     def __init__(self, controleur, master):
         super().__init__(master)
         self._controleur = controleur
         self._master = master
         
         self._preparerInterface()
+        
+    ####################################
+    ##           INTERFACE            ##
+    ####################################
     
     def _preparerInterface(self):
         
-        self._boutonDemarrer = Button(self, text="Démarrer", command=self._controleur.actionDemarrer)
-        self._boutonOptions = Button(self, text="Options", command=self._controleur.actionOptions)
-        self._boutonQuitter = Button(self, text="Quitter", command=self._controleur.actionQuitter)
+        # Definitions
+        self._boutonDemarrer = Button(self, text="Démarrer", width=32, height=2, command=self._controleur.actionDemarrer)
+        self._boutonOptions = Button(self, text="Options", width=32, height=2, command=self._controleur.actionOptions)
+        self._boutonQuitter = Button(self, text="Quitter", width=32, height=2, command=self._controleur.actionQuitter)
         self._labelScoreEtiquette = Label(self, text="Score: ")
         self._labelScoreValeur = Label(self, text="0")
-        self._grille = Grille(self)
+        self._grille = Grille(self,width=400, height=400,bg="green")
+        self._highscores = Listbox(self, width=32, height=10)
         
-        self._boutonDemarrer.grid(row=0, column=0)
-        self._boutonOptions.grid(row=0, column=1)
-        self._boutonQuitter.grid(row=0, column=2)
-        self._labelScoreEtiquette.grid(row=1, column=0)
-        self._labelScoreValeur.grid(row=1, column=1)
-        self._grille.grid(row=2, column=0, columnspan=3)
-        
+        # Layout
+        self._boutonDemarrer.grid(row=0, column=1, columnspan=2, padx=5)
+        self._boutonOptions.grid(row=1, column=1, columnspan=2,padx=5)
+        self._boutonQuitter.grid(row=2, column=1, columnspan=2, padx=5)
+        self._labelScoreEtiquette.grid(row=3, column=1)
+        self._labelScoreValeur.grid(row=3, column=2)
+        self._highscores.grid(row=5, column=1, columnspan=2)
+        self._grille.grid(row=0, column=0, rowspan=6)
+
+        # Applique le layout
         self.pack()
-    
-    def afficherGrille(self, grille):
-        pass
-    
+        
+        # Genere la partie
+        self._grille.generer()
