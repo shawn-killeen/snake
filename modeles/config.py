@@ -1,9 +1,16 @@
+# Shawn Killeen - Travail Pratique Synthese
+# College Montmorency - H2021 4B5 - S. Deschenes
+
 import json
 import os
 
 class Config:
 
     FICHIER_CONFIG = "./config.json"
+    
+    ####################################
+    ##            DUNDERS             ##
+    ####################################
     
     def __init__(self, grosseurGrille=8, tickRate=1, longeurDebut=3):
         self._grosseurGrille = grosseurGrille
@@ -14,11 +21,22 @@ class Config:
         affichage = "%s %s %s" %  (str(self.getGrosseurGrille()), str(self.getTickRate()), str(self.getLongeurDebut()))
         return affichage
     
-    def getGrosseurGrille(self): return self._grosseurGrille
+    ####################################
+    ##            GETTERS             ##
+    ####################################
     
-    def getTickRate(self): return self._tickRate
+    def getGrosseurGrille(self): 
+        return self._grosseurGrille
     
-    def getLongeurDebut(self): return self._longeurDebut
+    def getTickRate(self): 
+        return self._tickRate
+    
+    def getLongeurDebut(self): 
+        return self._longeurDebut
+    
+    ####################################
+    ##            SETTERS             ##
+    ####################################
     
     def setGrosseurGrille(self, valeur): self._grosseurGrille = int(valeur)
     
@@ -26,6 +44,12 @@ class Config:
     
     def setLongeurDebut(self, valeur): self._longeurDebut = int(valeur)
     
+    ####################################
+    ##            DONNEES             ##
+    ####################################
+    
+    # Chargement du fichier de configuration en json Si le fichier 
+    # n'existe pas, le programme charge le constructeur defaut
     @classmethod
     def charger(cls):
         
@@ -38,6 +62,7 @@ class Config:
             print("Json ne peut pas etre charger")
             return Config()
     
+    # Sauvegarde de la configuration en json, le contenu du fichier est ecraser
     def sauvegarder(self):
         try:
             with open(self.FICHIER_CONFIG, "w", encoding='utf-8') as fichier:
