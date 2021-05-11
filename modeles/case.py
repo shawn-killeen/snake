@@ -1,8 +1,17 @@
 from enum import Enum
 
 class Case:
+     
+    def __init__(self, grosseurGrille=0, x=0, y=0):
+        self._grosseurGrille = grosseurGrille
+        self._x = x
+        self._y = y
     
-        
+    def getGrosseurGrille(self):
+        return self._grosseurGrille
     
-    def __init__(self,):
-        
+    def getX(self):
+        return self._x
+    
+    def getY(self):
+        return self._y

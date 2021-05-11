@@ -15,19 +15,18 @@ class Controleur(Tk):
     def __init__(self):
         super().__init__()
 
-        self._logique = Logique(self)
+        self._config = Config.charger()
 
         self.title("Snake - Shawn Killeen")
-        #self.resizable(width=False, height=False)
-        self._demarrerVue()
+        self._partie = Partie(self, self, config=self._config)
+
+        self._logique = Logique(controleur=self, config=self._config , vue=self._partie)
+    
+        self._partie.mainloop()
         
     ####################################
     ##          CONTROLEUR            ##
     ####################################
-    
-    def _demarrerVue(self):
-        partie = Partie(self, self)
-        partie.mainloop()
     
     ####################################
     ##            ACTIONS             ##
@@ -35,7 +34,7 @@ class Controleur(Tk):
     # Callbacks des boutons de l'interface
     
     def actionDemarrer(self):
-        self._logique.demarrerLoop()
+        self._logique.demarrer()
     
     def actionOptions(self):
         pass

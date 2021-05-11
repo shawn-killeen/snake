@@ -7,10 +7,11 @@ class Partie(Frame):
     ##            DUNDERS             ##
     ####################################
     
-    def __init__(self, controleur, master):
+    def __init__(self, controleur, master, config):
         super().__init__(master)
         self._controleur = controleur
         self._master = master
+        self._config = config
         
         self._preparerInterface()
         
@@ -26,7 +27,7 @@ class Partie(Frame):
         self._boutonQuitter = Button(self, text="Quitter", width=32, height=2, command=self._controleur.actionQuitter)
         self._labelScoreEtiquette = Label(self, text="Score: ")
         self._labelScoreValeur = Label(self, text="0")
-        self._grille = Grille(self,width=400, height=400,bg="green")
+        self._grille = Grille(self,width=400, height=400,bg="green", config=self._config)
         self._highscores = Listbox(self, width=32, height=10)
         
         # Layout
@@ -43,3 +44,6 @@ class Partie(Frame):
         
         # Genere la partie
         self._grille.generer()
+        
+    def getGrille(self):
+        return self._grille

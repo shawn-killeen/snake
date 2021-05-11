@@ -1,6 +1,7 @@
-from modeles.config import Config
 from tkinter import Canvas
 from time import sleep
+from modeles.caseSerpent import CaseSerpent
+from modeles.case import Case
 
 class Grille(Canvas):
     
@@ -10,16 +11,20 @@ class Grille(Canvas):
     
     TAILLE = 400
     COULEURS_FOND = ("green", "lightgreen")
-    COULEURS_SERPENT = "purple"
+    COULEUR_SERPENT = "purple"
     COULEUR_POMME = "red"
     
     ####################################
     ##            DUNDERS             ##
     ####################################
     
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, config, **kwargs):
         super().__init__(master, kwargs)
-        self.config = Config.charger()
+        self._config = config
+        
+        self.largeurGrille = self._config.getGrosseurGrille() # Nombre de cases par row/col
+        self.casePixel = self.TAILLE/self.largeurGrille # Grosseur tkinter
+        self.casePourEffacer = None
     
     ####################################
     ##            HELPERS             ##
@@ -39,11 +44,29 @@ class Grille(Canvas):
     ####################################
     
     def generer(self):
-        largeurGrille = self.config.getGrosseurGrille() # Nombre de cases par row/col
-        casePixel = self.TAILLE/largeurGrille # Grosseur tkinter
-
         # On dessine
-        for y in range(largeurGrille):
-            for x in range(largeurGrille):
-                coord = (x*casePixel, y*casePixel, x*casePixel + casePixel, y*casePixel + casePixel)
-                self.create_rectangle(coord, fill=Jeu._trouverCouleur(x,y), outline='')
+        for y in range(self.largeurGrille):
+            for x in range(self.largeurGrille):
+                self.dessinerCase(Case(x=x, y=y), couleur=Grille._trouverCouleur(x,y))
+    
+    def dessinerSerpent(self, serpent):
+        case = serpent.getTete()
+        
+        efface = self.casePourEffacer
+        if efface is not None:
+            self.dessinerCase(efface, couleur=Grille._trouverCouleur(efface.getX(),efface.getY()))
+        
+        while True:
+            
+            self.dessinerCase(case, Grille.COULEUR_SERPENT)
+            
+            if case.getEnfant() is not None:
+                case = case.getEnfant()
+            else:
+                self.casePourEffacer = Case(0, x=case.getX(), y=case.getY())
+                break
+              
+    def dessinerCase(self, case, couleur='black'):
+        casePixel = self.casePixel
+        coord = (case.getX()*casePixel, case.getY()*casePixel, case.getX()*casePixel + casePixel, case.getY()*casePixel + casePixel)
+        self.create_rectangle(coord, fill=couleur, outline='')
