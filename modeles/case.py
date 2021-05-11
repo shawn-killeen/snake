@@ -1,11 +1,19 @@
 from enum import Enum
 
 class Case:
-     
+    
+    ####################################
+    ##            DUNDERS             ##
+    ####################################
+    
     def __init__(self, grosseurGrille=0, x=0, y=0):
         self._grosseurGrille = grosseurGrille
         self._x = x
         self._y = y
+    
+    ####################################
+    ##            GETTERS             ##
+    ####################################
     
     def getGrosseurGrille(self):
         return self._grosseurGrille
