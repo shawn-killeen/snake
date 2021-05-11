@@ -1,4 +1,5 @@
 from vues.partie import Partie
+from vues.input import Input
 from controleurs.logique import Logique
 from modeles.config import Config
 from tkinter import Tk
@@ -19,8 +20,10 @@ class Controleur(Tk):
 
         self.title("Snake - Shawn Killeen")
         self._partie = Partie(self, self, config=self._config)
+        
+        self._input = Input(self._config)
 
-        self._logique = Logique(controleur=self, config=self._config , vue=self._partie)
+        self._logique = Logique(controleur=self, config=self._config , vue=self._partie, direction=self._input.getDirection)
     
         self._partie.mainloop()
         

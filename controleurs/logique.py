@@ -11,10 +11,11 @@ class Logique:
     ##            DUNDERS             ##
     ####################################
     
-    def __init__(self, controleur, config, vue):
+    def __init__(self, controleur, config, vue, direction):
         self._controlleur = controleur
         self._config = config
         self._vue = vue
+        self._direction = direction
         
         # init de variables pour qu'elle existe en tout temps
         self.estDemarrer = False # une partie dans le thread
@@ -29,7 +30,6 @@ class Logique:
     def demarrer(self):
         
         # Init du jeu
-        self._direction = "up"
         self.estDemarrer = True
         self._tick = 1/self._config.getTickRate()
         self._grille = self._vue.getGrille()
@@ -40,6 +40,7 @@ class Logique:
         
         # Nouveau snake!
         self._creerSerpent()
+        CaseSerpent.ajouterFileAllonger(2)
     
     def demarrerLoop(self):
         # boucle
@@ -57,8 +58,6 @@ class Logique:
 
     def _gameLoop(self):
         
-        count = 0 # Pour test
-        
         mort = False # Sauvegarde la mort en dehors de la loop
         
         while(not self.stopBoucle):
@@ -66,27 +65,13 @@ class Logique:
             if(self.estDemarrer):
                 if not mort:
                     # On modifie les objets du jeu
-                    mort = self._serpent.initierBouger(self._direction)
+                    mort = self._serpent.initierBouger(self._direction())
                     
                     # On affiche le jeu
                     self._grille.dessinerSerpent(self._serpent)
                     
                     # Deroulement du jeu
                     sleep(self._tick)
-                    
-                    ############################## MOUVEMENTS DE TEST
-                    count = count+1
-                    CaseSerpent.allongerAuTick = True
-                    if count == 4:
-                        self._direction = 'left' 
-                    elif count == 20:
-                        self._direction = 'down'
-                    elif count == 20:
-                        self._direction = 'right'
-                    elif count == 20:
-                        self._direction = 'up'
-                        count = 0
-                    ############################### MOUVEMENTS DE TEST
                         
                 else:
                     # Affiche la carcasse du pauvre serpent et met le jeu sur pause

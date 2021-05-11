@@ -12,10 +12,11 @@ class Config:
     ##            DUNDERS             ##
     ####################################
     
-    def __init__(self, grosseurGrille=8, tickRate=1, longeurDebut=3):
+    def __init__(self, grosseurGrille=8, tickRate=1, longeurDebut=3, typeInput="clavier"):
         self._grosseurGrille = grosseurGrille
         self._tickRate = tickRate
         self._longeurDebut = longeurDebut
+        self._typeInput = typeInput
         
     def __repr__(self):
         affichage = "%s %s %s" %  (str(self.getGrosseurGrille()), str(self.getTickRate()), str(self.getLongeurDebut()))
@@ -34,6 +35,9 @@ class Config:
     def getLongeurDebut(self): 
         return self._longeurDebut
     
+    def getTypeInput(self):
+        return self._typeInput
+    
     ####################################
     ##            SETTERS             ##
     ####################################
@@ -43,6 +47,8 @@ class Config:
     def setTickRate(self, valeur): self._tickRate = int(valeur)
     
     def setLongeurDebut(self, valeur): self._longeurDebut = int(valeur)
+    
+    def setTypeInput(self, valeur): self._typeInput = str(valeur)
     
     ####################################
     ##            DONNEES             ##
@@ -57,7 +63,10 @@ class Config:
             with open(cls.FICHIER_CONFIG, "r", encoding='utf-8') as fichier:
             
                 donnees = json.load(fichier)
-                return Config(donnees["grosseurGrille"], donnees["tickRate"], donnees["longeurDebut"])
+                return Config(grosseurGrille=donnees["grosseurGrille"], 
+                              tickRate=donnees["tickRate"], 
+                              longeurDebut=donnees["longeurDebut"], 
+                              typeInput=donnees["input"])
         except:
             print("Json ne peut pas etre charger")
             return Config()
@@ -69,7 +78,8 @@ class Config:
                 
                 donnees = {"grosseurGrille": self.getGrosseurGrille(),
                             "tickRate": self.getTickRate(),
-                            "longeurDebut": self.getLongeurDebut()}
+                            "longeurDebut": self.getLongeurDebut(),
+                            "input": self.getTypeInput()}
             
                 json.dump(donnees, fichier, indent=2, ensure_ascii=False)
                 

@@ -8,8 +8,8 @@ class CaseSerpent(Case) :
     ##     VARIABLES DE CLASSE        ##
     ####################################
     
-    serpent = [] # les cases de serpents (pour la detection de collision)
-    allongerAuTick = False # Flag pour rajouter une case
+    _serpent = [] # les cases de serpents (pour la detection de collision)
+    _allongerAuTick = 0 # Flag pour rajouter une case
      
     ####################################
     ##            DUNDERS             ##
@@ -55,11 +55,28 @@ class CaseSerpent(Case) :
     ####################################
     ##            CLASSE              ##
     ####################################
+    
+    @classmethod
+    def effacerSerpent(cls):
+        cls._serpent = []
+    
+    @classmethod
+    def ajouterFileAllonger(cls, nbr=1):
+        cls._allongerAuTick = cls._allongerAuTick + nbr
+    
+    @classmethod
+    def diminuerFileAllonger(cls, nbr=1):
+        valeur = cls._allongerAuTick - nbr if cls._allongerAuTick - nbr >= 0 else 0
+        cls._allongerAuTick = valeur
         
+    @classmethod
+    def doitAllonger(cls):
+        return True if cls._allongerAuTick > 0 else False
+    
     @classmethod
     def checkCaseLibre(cls, x, y):
         libre = True
-        for case in cls.serpent:
+        for case in cls._serpent:
             if case.getX() == x:
                 if case.getY() == y:
                     libre = False
@@ -127,11 +144,11 @@ class CaseSerpent(Case) :
         # Verifie si une case prend la place (enfant ou nouvelle case)
         if(self._enfant is not None):
             self._enfant._bouger(tempX, tempY)
-        elif(CaseSerpent.allongerAuTick is True):
+        elif(CaseSerpent.doitAllonger()):
             self._allonger(tempX, tempY, parent=self)
             
     # On rajoute une cellule
     def _allonger(self, x, y, parent):
         nouveau = CaseSerpent(parent.getGrosseurGrille(), x, y, parent)
         parent.setEnfant(nouveau)
-        CaseSerpent.allongerAuTick = False
+        CaseSerpent.diminuerFileAllonger()

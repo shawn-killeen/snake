@@ -1,5 +1,6 @@
 {
   "grosseurGrille": 10,
   "tickRate": 4,
-  "longeurDebut": 3
+  "longeurDebut": 3,
+  "input": "clavier"
 }
