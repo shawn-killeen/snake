@@ -23,3 +23,13 @@ class Case:
     
     def getY(self):
         return self._y
+    
+    ####################################
+    ##            SETTERS             ##
+    ####################################
+    
+    def setX(self, valeur):
+        self.x = valeur
+        
+    def setY(self, valeur):
+        self.y = valeur

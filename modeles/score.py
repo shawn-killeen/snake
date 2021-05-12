@@ -18,12 +18,12 @@ class Score ():
         self._score = score
         
         if date is None: 
-            self._date = datetime.now
+            self._date = datetime.now().date()
         else: 
-            self._date = date
+            self._date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S.%f")
             
     def __repr__(self):
-        affichage = "%s %s %s" %  (str(self.getScore()), str(self.getNom()), str(self.getDate()))
+        affichage = "[%s points] %s - %s" %  (str(self.getScore()), str(self.getNom()), str(self.getDate().strftime("%B %d")))
         return affichage
     
     ####################################

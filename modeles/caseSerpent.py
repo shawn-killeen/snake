@@ -1,6 +1,6 @@
 from modeles.case import Case
 from enum import Enum
-
+import math
 
 class CaseSerpent(Case) :
     
@@ -20,7 +20,7 @@ class CaseSerpent(Case) :
         self._parent = parent
         self._enfant = enfant
         
-        CaseSerpent.serpent.append(self)
+        CaseSerpent._serpent.append(self)
     
     ####################################
     ##            GETTERS             ##
@@ -55,6 +55,11 @@ class CaseSerpent(Case) :
     ####################################
     ##            CLASSE              ##
     ####################################
+    
+    @classmethod
+    def genererSerpent(cls, grosseurGrille):
+        initiale = math.floor(grosseurGrille/2)
+        return CaseSerpent(grosseurGrille, x=initiale, y=initiale, parent=None, enfant=None )
     
     @classmethod
     def effacerSerpent(cls):

@@ -77,6 +77,9 @@ class Grille(Canvas):
                 self.casePourEffacer = Case(0, x=case.getX(), y=case.getY())
                 break
     
+    def dessinerPomme(self, case):
+        self.dessinerCase(case, Grille.COULEUR_POMME)
+    
     # Dessine une seul case
     def dessinerCase(self, case, couleur='black'):
         casePixel = self.casePixel # Pour raccourcir

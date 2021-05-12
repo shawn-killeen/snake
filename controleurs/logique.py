@@ -1,6 +1,7 @@
 from vues.partie import Partie
 from modeles.config import Config
 from modeles.caseSerpent import CaseSerpent
+from modeles.casePomme import CasePomme
 from threading import Thread
 from time import sleep
 import math
@@ -19,6 +20,7 @@ class Logique:
         
         # init de variables pour qu'elle existe en tout temps
         self.estDemarrer = False # une partie dans le thread
+        self.score = 0
         
         # Boucle
         self.demarrerLoop()
@@ -26,21 +28,6 @@ class Logique:
     ####################################
     ##          CONTROLEUR            ##
     ####################################
-    
-    def demarrer(self):
-        
-        # Init du jeu
-        self.estDemarrer = True
-        self._tick = 1/self._config.getTickRate()
-        self._grille = self._vue.getGrille()
-        
-        # Reset de la partie precedente (on verifie pas, pas besoin de performance ici :') )
-        self._grille.generer()
-        CaseSerpent.serpent = []
-        
-        # Nouveau snake!
-        self._creerSerpent()
-        CaseSerpent.ajouterFileAllonger(2)
     
     def demarrerLoop(self):
         # boucle
@@ -56,6 +43,33 @@ class Logique:
     ##             SNAKE              ##
     ####################################    
 
+    def ajouterAuScore(self, nbr=1):
+        self.score = self.score + nbr
+        
+    def resetScore(self):
+        self.score = 0
+        
+    def getScore(self):
+        return self.score
+
+    def demarrer(self):
+        
+        # Init du jeu
+        self.estDemarrer = True
+        self.resetScore()
+        self._vue.afficherScore(self.getScore())
+        self._tick = 1/self._config.getTickRate()
+        self._grille = self._vue.getGrille()
+        
+        # Reset de la partie precedente (on verifie pas, pas besoin de performance ici :') )
+        self._grille.generer()
+        CaseSerpent.effacerSerpent()
+        
+        # Nouveau snake!
+        self._serpent = CaseSerpent.genererSerpent(self._config.getGrosseurGrille())
+        self._pomme = CasePomme.genererPomme(self._config.getGrosseurGrille())
+        CaseSerpent.ajouterFileAllonger(2)
+
     def _gameLoop(self):
         
         mort = False # Sauvegarde la mort en dehors de la loop
@@ -67,8 +81,15 @@ class Logique:
                     # On modifie les objets du jeu
                     mort = self._serpent.initierBouger(self._direction())
                     
+                    if(self._pomme.toucheSerpent()):
+                        self._pomme = CasePomme.genererPomme(self._config.getGrosseurGrille())
+                        CaseSerpent.ajouterFileAllonger(1)
+                        self.ajouterAuScore()
+                        self._vue.afficherScore(self.getScore())     
+                    
                     # On affiche le jeu
                     self._grille.dessinerSerpent(self._serpent)
+                    self._grille.dessinerPomme(self._pomme)
                     
                     # Deroulement du jeu
                     sleep(self._tick)
@@ -78,12 +99,8 @@ class Logique:
                     self._grille.dessinerSerpent(self._serpent, mort=True)
                     self.estDemarrer = False
                     mort = False
+                    self._controlleur.sauvegarderScore(self.getScore())
             else:
                 sleep(1) # Patiente pour une nouvelle partie (Un seul thread pour tout les parties)
-            
-    # Creer une case de serpent et on le met au centre   
-    def _creerSerpent(self):
-        initiale = math.floor(self._config.getGrosseurGrille()/2)
-        self._serpent =  CaseSerpent(self._config.getGrosseurGrille(), x=initiale, y=initiale, parent=None, enfant=None )
     
     

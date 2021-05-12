@@ -25,7 +25,7 @@ class Partie(Frame):
         self._boutonDemarrer = Button(self, text="Démarrer", width=32, height=2, command=self._controleur.actionDemarrer)
         self._boutonOptions = Button(self, text="Options", width=32, height=2, command=self._controleur.actionOptions)
         self._boutonQuitter = Button(self, text="Quitter", width=32, height=2, command=self._controleur.actionQuitter)
-        self._labelScoreEtiquette = Label(self, text="Score: ")
+        self._labelScoreEtiquette = Label(self, text="Score: " )
         self._labelScoreValeur = Label(self, text="0")
         self._grille = Grille(self,width=400, height=400,bg="green", config=self._config)
         self._highscores = Listbox(self, width=32, height=10)
@@ -47,3 +47,12 @@ class Partie(Frame):
         
     def getGrille(self):
         return self._grille
+    
+    def afficherScore(self, score):
+        self._labelScoreValeur.config(text=score)
+        
+    def afficherHighscores(self, scores):
+        self._highscores.delete(0, self._highscores.size()-1)
+        
+        for score in scores:
+            self._highscores.insert (END, score)

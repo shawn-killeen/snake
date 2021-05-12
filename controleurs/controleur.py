@@ -1,7 +1,9 @@
 from vues.partie import Partie
+from vues.sauvegarde import Sauvegarde
 from vues.input import Input
 from controleurs.logique import Logique
 from modeles.config import Config
+from modeles.score import Score
 from tkinter import Tk
 from threading import Thread
 from time import sleep
@@ -16,6 +18,8 @@ class Controleur(Tk):
     def __init__(self):
         super().__init__()
 
+        self._inputNom = "Inconnu"
+
         self._config = Config.charger()
 
         self.title("Snake - Shawn Killeen")
@@ -25,11 +29,33 @@ class Controleur(Tk):
 
         self._logique = Logique(controleur=self, config=self._config , vue=self._partie, direction=self._input.getDirection)
     
+        self.chargerHighscores()
+    
         self._partie.mainloop()
         
     ####################################
     ##          CONTROLEUR            ##
     ####################################
+    
+    def chargerHighscores(self):
+        scores = Score.chargerScores()
+        self._partie.afficherHighscores(scores)
+        
+    def sauvegarderScore(self, valeur):
+        
+        if(valeur > 0):
+            # Obtenir le nom du joueur
+            popup = Tk()
+            sauvegarde = Sauvegarde(popup, self, valeur)
+            sauvegarde.mainloop()
+            
+            # Creer et sauvegarder le score
+            score = Score(self._inputNom, valeur)
+            score.sauvegarder()
+            
+            # Reload les scores
+            self.chargerHighscores()
+        
     
     ####################################
     ##            ACTIONS             ##
@@ -45,3 +71,6 @@ class Controleur(Tk):
     def actionQuitter(self):
        self._logique.arreterLoop()
        self.quit()
+       
+    def actionRecevoirNom(self, valeur):
+        self._inputNom = valeur
