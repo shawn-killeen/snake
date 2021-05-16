@@ -1,4 +1,3 @@
-from libs.ADCDevice import *
 from threading import Thread
 import keyboard
 from gpiozero import *
@@ -18,7 +17,7 @@ class Output:
         except GPIOZeroError as erreur:
             self.graphique = None
             self.buzzer = None
-            print("pas de gpio " + erreur)
+            print("pas de gpio")
     
     ####################################
     ##              OUTPUT            ##

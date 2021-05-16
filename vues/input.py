@@ -1,8 +1,12 @@
-from libs.ADCDevice import *
 from threading import Thread
 import keyboard
 import gpiozero
 from time import sleep
+
+try:
+    from libs.ADCDevice import *
+except ImportError:
+    print("pas de raspberry pi (import librarie)")
 
 class Input:
     
@@ -14,11 +18,18 @@ class Input:
         self._config = config
         self.direction = "up"
         
-        if self._config.getTypeInput() == "clavier":
-            self.inputClavier()
-        elif self._config.getTypeInput() == "gpio":
-            self.adc = ADS7830()
-            self.inputGPIO()
+        typeInput = self._config.getTypeInput()
+        if typeInput == "clavier" or typeInput == "tout":
+            try:
+                self.inputClavier()
+            except:
+                print("erreur input clavier")
+        if typeInput == "gpio" or typeInput == "tout":
+            try:
+                self.adc = ADS7830()
+                self.inputGPIO()
+            except:
+                print("erreur input gpio")
     
     ####################################
     ##        SETTERS/GETTERS         ##
