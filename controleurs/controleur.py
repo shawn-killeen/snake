@@ -70,6 +70,7 @@ class Controleur(Tk):
     
     def actionQuitter(self):
        self._logique.arreterLoop()
+       self._input.arreterLoop()
        self.quit()
        
     def actionRecevoirNom(self, valeur):
