@@ -52,7 +52,7 @@ class Score ():
             curseur = connexion.cursor()
             
             # Requete
-            requete = "SELECT nom, score, date FROM score"
+            requete = "SELECT nom, score, date FROM score ORDER BY score DESC LIMIT 10"
             curseur.execute(requete)
             
             # Transformation

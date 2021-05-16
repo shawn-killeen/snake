@@ -48,6 +48,7 @@ class Controleur(Tk):
         if(valeur > 0):
             # Obtenir le nom du joueur
             popup = Tk()
+            popup.title("Sauvegarde du score!")
             sauvegarde = Sauvegarde(popup, self, valeur)
             sauvegarde.mainloop()
             

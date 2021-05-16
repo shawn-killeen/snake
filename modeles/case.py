@@ -29,7 +29,7 @@ class Case:
     ####################################
     
     def setX(self, valeur):
-        self.x = valeur
+        self._x = valeur
         
     def setY(self, valeur):
-        self.y = valeur
+        self._y = valeur

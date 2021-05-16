@@ -118,8 +118,9 @@ class Logique:
         # Affiche la carcasse du pauvre serpent et met le jeu sur pause
         self._grille.dessinerSerpent(self._serpent, mort=True)
         self.estDemarrer = False
-        self._controlleur.sauvegarderScore(self.getScore())
         
         if self._output is not None:
             self._output.sonner(2)
+            
+        self._controlleur.sauvegarderScore(self.getScore())
     
