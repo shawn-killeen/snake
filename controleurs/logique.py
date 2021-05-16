@@ -12,11 +12,12 @@ class Logique:
     ##            DUNDERS             ##
     ####################################
     
-    def __init__(self, controleur, config, vue, direction):
+    def __init__(self, controleur, config, vue, direction, output=None):
         self._controlleur = controleur
         self._config = config
         self._vue = vue
         self._direction = direction
+        self._output = output
         
         # init de variables pour qu'elle existe en tout temps
         self.estDemarrer = False # une partie dans le thread
@@ -61,6 +62,9 @@ class Logique:
         self._tick = 1/self._config.getTickRate()
         self._grille = self._vue.getGrille()
         
+        if self._output is not None:
+            self._output.setPoints(0)
+        
         # Reset de la partie precedente (on verifie pas, pas besoin de performance ici :') )
         self._grille.generer()
         CaseSerpent.effacerSerpent()
@@ -82,10 +86,7 @@ class Logique:
                     mort = self._serpent.initierBouger(self._direction())
                     
                     if(self._pomme.toucheSerpent()):
-                        self._pomme = CasePomme.genererPomme(self._config.getGrosseurGrille())
-                        CaseSerpent.ajouterFileAllonger(1)
-                        self.ajouterAuScore()
-                        self._vue.afficherScore(self.getScore())     
+                        self.effectuerPoint()  
                     
                     # On affiche le jeu
                     self._grille.dessinerSerpent(self._serpent)
@@ -95,12 +96,30 @@ class Logique:
                     sleep(self._tick)
                         
                 else:
-                    # Affiche la carcasse du pauvre serpent et met le jeu sur pause
-                    self._grille.dessinerSerpent(self._serpent, mort=True)
-                    self.estDemarrer = False
                     mort = False
-                    self._controlleur.sauvegarderScore(self.getScore())
+                    self.mourir()
             else:
                 sleep(1) # Patiente pour une nouvelle partie (Un seul thread pour tout les parties)
     
+    # Quand le serpent touche une pomme
+    def effectuerPoint(self):
+        self._pomme = CasePomme.genererPomme(self._config.getGrosseurGrille())
+        CaseSerpent.ajouterFileAllonger(1)
+        self.ajouterAuScore()
+        self._vue.afficherScore(self.getScore())
+                
+        if self._output is not None:
+            self._output.setPoints(self.getScore())
+            self._output.sonner()
+        
+    # le serpent meurt    
+    def mourir(self):
+        
+        # Affiche la carcasse du pauvre serpent et met le jeu sur pause
+        self._grille.dessinerSerpent(self._serpent, mort=True)
+        self.estDemarrer = False
+        self._controlleur.sauvegarderScore(self.getScore())
+        
+        if self._output is not None:
+            self._output.sonner(2)
     

@@ -1,6 +1,7 @@
 from vues.partie import Partie
 from vues.sauvegarde import Sauvegarde
 from vues.input import Input
+from vues.output import Output
 from controleurs.logique import Logique
 from modeles.config import Config
 from modeles.score import Score
@@ -26,8 +27,9 @@ class Controleur(Tk):
         self._partie = Partie(self, self, config=self._config)
         
         self._input = Input(self._config)
+        self._output = Output()
 
-        self._logique = Logique(controleur=self, config=self._config , vue=self._partie, direction=self._input.getDirection)
+        self._logique = Logique(controleur=self, config=self._config , vue=self._partie, direction=self._input.getDirection, output=self._output)
     
         self.chargerHighscores()
     
