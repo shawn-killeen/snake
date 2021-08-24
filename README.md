@@ -5,8 +5,8 @@ The game works physical controls but will work without them using a keyboard. Th
 
 *Le jeu a été fait pour un projet de fin de session où j'avais besoin d'exploiter un raspberry pi et une interface utilisateur. Le programme fonctionne avec des contrôles physiques, mais peut également fonctionner avec un clavier traditionnel.*
 
-**Yes the game is very choppy**
+**Yes, the game is very choppy ;)**
 
-![Screenshot](demo.png)
+![Screenshot](demo.png) <br/>
 ![Picture of the pi](rpi.jpg)
 
