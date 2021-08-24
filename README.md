@@ -1,4 +1,4 @@
-# Python Snake *pun not intended*
+# Python Snake *(pun not intended)*
 
 This was made for a end of semester assigned where I needed to create a piece of software that would use a raspberry pi and a user interface.
 The game works physical controls but will work without them using a keyboard. The Raspberry pi docs are long gone.
